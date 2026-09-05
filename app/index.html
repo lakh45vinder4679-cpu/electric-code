@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#0f0f0f">
+<meta name="description" content="Electric Code Assistant - Ultra-lightweight AI web IDE. Developed by Electric Code Assistant | Created by Lakhvinder Singh.">
+<title>Electric Code Assistant | Created by Lakhvinder Singh</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button class="icon-btn" id="menuBtn" title="Menu" aria-label="Menu">
+    <svg viewBox="0 0 24 24" width="20" height="20"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+  <div class="brand">
+    <span class="bolt" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="18" height="18"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor"/></svg>
+    </span>
+    <span class="brand-name">Electric Code Assistant</span>
+    <span class="brand-sub">by Lakhvinder Singh</span>
+  </div>
+  <div class="top-actions">
+    <span class="route-pill" id="routePill" title="Active AI route">Route: Auto</span>
+    <button class="btn btn-ghost" id="newBtn" title="Start a new project">New</button>
+    <button class="btn btn-ghost" id="exportBtn" title="Export modular APK-ready project (.zip)">Export APK</button>
+    <button class="btn btn-primary" id="runBtn">Run</button>
+    <button class="icon-btn" id="settingsBtn" title="API Hub / Settings" aria-label="API Hub / Settings">
+      <svg viewBox="0 0 24 24" width="20" height="20"><path d="M4 7h10M18 7h2M4 12h4M12 12h8M4 17h13M21 17h-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="16" cy="7" r="2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="10" cy="12" r="2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="19" cy="17" r="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+    </button>
+  </div>
+</header>
+
+<aside class="sidebar" id="sidebar">
+  <nav class="side-sec">
+    <div class="side-title">Project Files</div>
+    <ul class="file-list" id="fileList"></ul>
+    <button class="side-btn" id="newFileBtn">+ New File</button>
+  </nav>
+  <nav class="side-sec">
+    <div class="side-title">Tools</div>
+    <button class="side-btn" id="aboutBtn">About &amp; Credits</button>
+    <button class="side-btn danger" id="wipeBtn">Wipe Local Data</button>
+  </nav>
+  <div class="side-foot">
+    Developed by Electric Code Assistant<br>
+    Created by Lakhvinder Singh
+  </div>
+</aside>
+
+<div class="scrim" id="scrim"></div>
+
+<main class="main">
+  <div class="view-tabs" id="viewTabs">
+    <button class="vtab active" data-view="code">Code</button>
+    <button class="vtab" data-view="preview">Preview</button>
+    <button class="vtab" data-view="chat">Chat</button>
+  </div>
+
+  <section class="pane editor-pane view-code">
+    <div class="pane-head">
+      <div class="tabs" id="fileTabs"></div>
+      <div class="pane-tools">
+        <span class="save-pill" id="savePill" title="Auto-save status">Saved</span>
+      </div>
+    </div>
+    <div class="code-wrap">
+      <pre class="hl" id="hl" aria-hidden="true"><code></code></pre>
+      <textarea class="code" id="code" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" wrap="off" aria-label="Code editor"></textarea>
+    </div>
+    <div class="editor-foot">
+      <span id="lineInfo">Ln 1, Col 1</span>
+      <span id="langInfo">HTML</span>
+    </div>
+  </section>
+
+  <section class="pane preview-pane view-preview">
+    <div class="pane-head">
+      <span class="pane-title">Live Preview</span>
+      <div class="pane-tools">
+        <button class="mini-btn" id="openTabBtn" title="Open preview in a new tab">Open tab</button>
+        <button class="mini-btn" id="reloadBtn" title="Reload preview">Reload</button>
+      </div>
+    </div>
+    <iframe id="preview" title="Live preview" sandbox="allow-scripts allow-same-origin allow-modals allow-forms allow-popups"></iframe>
+    <div class="err-overlay hidden" id="errOverlay">
+      <div class="err-head">Runtime Error Detected</div>
+      <div class="err-msg" id="errMsg"></div>
+      <div class="err-actions">
+        <button class="btn btn-primary" id="fixBtn">Auto-Fix with AI</button>
+        <button class="mini-btn" id="dismissBtn">Dismiss</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="pane chat-pane view-chat">
+    <div class="pane-head">
+      <span class="pane-title">Electric Assistant</span>
+      <select id="routeSel" class="mini-select" title="Model routing preference">
+        <option value="auto">Smart Route (Auto)</option>
+        <option value="groq">Groq</option>
+        <option value="nvidia">NVIDIA</option>
+        <option value="gemini">Google Gemini</option>
+        <option value="deepseek">DeepSeek</option>
+        <option value="openrouter">OpenRouter</option>
+        <option value="julelum">Julelum</option>
+      </select>
+    </div>
+    <div class="chat-log" id="chatLog"></div>
+    <form class="chat-compose" id="chatForm">
+      <textarea id="chatInput" rows="2" placeholder="Describe the app you want... e.g. 'a live weather app' or 'make the button neon purple'"></textarea>
+      <button class="btn btn-primary" id="genBtn" type="submit">Generate</button>
+    </form>
+  </section>
+</main>
+
+<div class="modal hidden" id="settingsModal" role="dialog" aria-modal="true">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h2>API Hub &amp; Settings</h2>
+      <button class="icon-btn modal-close" id="settingsClose" aria-label="Close">
+        <svg viewBox="0 0 24 24" width="18" height="18"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" id="hubBody"></div>
+    <div class="modal-foot">
+      <span class="hub-note">Keys are encrypted with AES-GCM and stored only on this device (localStorage).</span>
+      <button class="btn btn-primary" id="saveAllBtn">Save All</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal hidden" id="aboutModal" role="dialog" aria-modal="true">
+  <div class="modal-card small">
+    <div class="modal-head">
+      <h2>About</h2>
+      <button class="icon-btn modal-close" id="aboutClose" aria-label="Close">
+        <svg viewBox="0 0 24 24" width="18" height="18"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="about-hero">
+        <span class="bolt big" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="40" height="40"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor"/></svg>
+        </span>
+        <h3>Electric Code Assistant</h3>
+        <p class="muted">Ultra-lightweight AI web IDE - optimized for 2GB RAM devices.</p>
+        <p class="muted">Developed by Electric Code Assistant | Created by Lakhvinder Singh</p>
+      </div>
+      <ul class="about-list">
+        <li>Deep dark-mode, glassmorphism UI inspired by Gemini / Cloud Code</li>
+        <li>Vanilla JS + pure CSS3 - zero heavy frameworks</li>
+        <li>Multi-model routing: Groq / NVIDIA (UI speed), DeepSeek / Gemini (logic &amp; debugging), OpenRouter / Julelum (fallback)</li>
+        <li>Live Search integration for real-time data apps</li>
+        <li>Encrypted local key storage with AES-GCM</li>
+        <li>Auto-save to localStorage - no data loss on low-end devices</li>
+        <li>Modular HTML/CSS/JS export - instantly APK-ready for WebView</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
