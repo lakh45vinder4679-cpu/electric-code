@@ -14,8 +14,8 @@
 | Windows PC (portable exe) | Electric-Code-Assistant-PC.exe | Download PC App |
 
 Permanent direct links (har naye release par same link):
-- APK: `https://github.com/lakh45vinder4679-cpu/Electric-Code-Assistant/releases/latest/download/Electric-Code-Assistant.apk`
-- PC: `https://github.com/lakh45vinder4679-cpu/Electric-Code-Assistant/releases/latest/download/Electric-Code-Assistant-PC.exe`
+- APK: `https://github.com/lakh45vinder4679-cpu/electric-code/releases/latest/download/Electric-Code-Assistant.apk`
+- PC: `https://github.com/lakh45vinder4679-cpu/electric-code/releases/latest/download/Electric-Code-Assistant-PC.exe`
 
 > PC app ke andar full APK builder bhi hai (Windows 10/11, x64). Bundled Android toolchain ke saath aata hai.
 
